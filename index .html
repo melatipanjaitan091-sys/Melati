@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Koding dan Kecerdasan Artifisial: Petualangan Robo-KKA</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef3ff;--grid:#d4def7;--card:#fff;--ink:#16213e;--mute:#5b6683;--acc:#e0245e;--ok:#12805c;--bad:#c0392b;--line:#b9c6ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1730;--grid:#1a2548;--card:#18223f;--ink:#eef2ff;--mute:#a4afd0;--acc:#ff5c8a;--ok:#4cd6a0;--bad:#ff8a7a;--line:#33417a}}
+:root[data-theme="dark"]{--bg:#0f1730;--grid:#1a2548;--card:#18223f;--ink:#eef2ff;--mute:#a4afd0;--acc:#ff5c8a;--ok:#4cd6a0;--bad:#ff8a7a;--line:#33417a}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:500 17px/1.5 "Baloo 2",system-ui,sans-serif;min-height:100vh}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:30px;line-height:1.1;margin:8px 0}
+h2{font-size:22px;margin:0 0 6px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.bar{display:flex;gap:6px;margin:6px 0 4px}
+.dot{flex:1;height:10px;border-radius:5px;background:var(--line)}
+.dot.done{background:var(--ok)}.dot.now{background:var(--acc)}
+.top{display:flex;justify-content:space-between;color:var(--mute);font-size:15px}
+button{font:inherit;color:inherit;cursor:pointer}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;min-height:44px}
+.opt:hover{border-color:var(--acc)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,var(--card))}
+.opt.used{opacity:.4}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:12px;padding:10px 20px;font-weight:700;min-height:44px}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.slot{min-height:44px;border:2px dashed var(--line);border-radius:12px;padding:8px 12px;margin:6px 0;color:var(--mute)}
+.slot.f{border-style:solid;color:var(--ink);background:var(--card)}
+.fb{min-height:48px;margin:8px 0;font-weight:700}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.grid{display:grid;gap:4px;margin:10px auto;width:max-content}
+.c{width:44px;height:44px;border-radius:8px;background:var(--card);border:2px solid var(--line);display:grid;place-items:center;font-size:24px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+code{background:var(--grid);padding:1px 6px;border-radius:6px;font-family:ui-monospace,monospace;font-size:15px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.big{font-size:56px;text-align:center}
+</style></head>
+<body><main id="app" aria-live="polite"></main>
+<script>
+const L=[
+{t:"Algoritma",story:"Robo-KKA lapar dan ingin membuat mi instan. Susun langkahnya dengan urutan yang benar.",
+ type:"order",steps:["Rebus air hingga mendidih","Masukkan mi","Tiriskan lalu tambah bumbu","Sajikan di mangkuk"],
+ hint:"Algoritma adalah langkah berurutan. Air harus panas sebelum mi dimasukkan.",
+ learn:"Algoritma = urutan langkah yang jelas untuk menyelesaikan masalah."},
+{t:"Perulangan",story:"Robo harus berjalan 4 petak ke kanan. Kode mana yang paling singkat dan benar?",
+ type:"grid",n:4,
+ opts:[["maju() ×4 (tulis 4 baris)",0],["ulangi 4 kali: maju()",1],["ulangi 4 kali: maju(); mundur()",0]],
+ hint:"Perulangan menggantikan baris yang sama dengan satu perintah ulangi.",
+ learn:"Perulangan (loop) membuat kode ringkas dan mudah diubah."},
+{t:"Kondisi",story:"Robo punya aturan: jika hujan, bawa payung; jika tidak, pakai topi. Hari ini cerah ☀️. Apa yang dibawa?",
+ type:"choice",opts:[["Payung ☂️",0],["Topi 🧢",1],["Payung dan topi",0]],
+ hint:"Cek kondisinya dulu: apakah hujan? Cerah berarti cabang 'jika tidak'.",
+ learn:"Percabangan (if-else) memilih tindakan sesuai kondisi."},
+{t:"Data dan Pelatihan AI",story:"Kamu melatih AI mengenali kucing. Data pelatihan mana yang paling baik?",
+ type:"choice",opts:[["10 foto kucing yang sama persis",0],["Ribuan foto kucing beragam (ras, posisi, cahaya) dengan label benar",1],["Foto kucing dengan label acak",0]],
+ hint:"AI belajar dari contoh. Contoh yang beragam dan berlabel benar memberi hasil terbaik.",
+ learn:"Kualitas dan keragaman data menentukan kualitas AI."},
+{t:"Etika dan Bias AI",story:"AI seleksi beasiswa hanya dilatih dari data penerima lama, dan hampir semuanya dari satu sekolah. Apa risikonya dan solusinya?",
+ type:"choice",opts:[["Tidak ada masalah, AI selalu objektif",0],["Hasil bisa bias. Solusinya: data lebih beragam dan ada pemeriksaan manusia",1],["Hapus saja AI-nya selamanya",0]],
+ hint:"AI meniru pola data. Jika datanya timpang, hasilnya ikut timpang.",
+ learn:"AI perlu data adil, transparansi, dan pengawasan manusia."}
+];
+let i=0,score=0,tries=0,state={};
+const $=s=>document.querySelector(s),app=$('#app');
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+function bar(){return `<div class="bar" role="img" aria-label="Level ${i+1} dari ${L.length}">${L.map((_,k)=>`<div class="dot ${k<i?'done':k==i?'now':''}"></div>`).join('')}</div>`}
+function start(){i=0;score=0;app.innerHTML=`<div class="big">🤖</div><h1>Koding dan Kecerdasan Artifisial: Petualangan Robo-KKA</h1>
+<div class="card"><p>Bantu Robo-KKA menaklukkan 5 level Koding dan Kecerdasan Artifisial: algoritma, perulangan, kondisi, data AI, dan etika AI.</p>
+<p>Setiap level punya petunjuk. Benar di percobaan pertama memberi 3 bintang.</p><button class="btn" id="go">Mulai level 1</button></div>`;$('#go').onclick=show}
+function show(){const q=L[i];tries=0;state={sel:[]};
+ app.innerHTML=`<div class="top"><span>Level ${i+1}/${L.length}</span><span>⭐ ${score}</span></div>${bar()}
+ <div class="card"><h2>${q.t}</h2><p>${q.story}</p><div id="play"></div><div class="fb" id="fb"></div>
+ <div class="row"><button class="btn ghost" id="hint">Petunjuk</button><button class="btn" id="next" hidden>${i<L.length-1?'Level berikutnya':'Lihat hasil'}</button></div></div>`;
+ $('#hint').onclick=()=>fb(q.hint,'');$('#next').onclick=()=>{i++;i<L.length?show():end()};
+ q.type=='order'?order(q):q.type=='grid'?gridLvl(q):choice(q)}
+function fb(m,c){const f=$('#fb');f.textContent=m;f.className='fb '+c}
+function win(q){const s=Math.max(1,3-tries);score+=s;fb(`Benar! +${s} bintang. ${q.learn}`,'ok');$('#next').hidden=false;$('#hint').hidden=true;document.querySelectorAll('.opt').forEach(b=>b.disabled=true)}
+function choice(q){const p=$('#play');p.innerHTML=shuf(q.opts).map((o,k)=>`<button class="opt" data-c="${o[1]}">${o[0]}</button>`).join('');
+ p.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(b.dataset.c=='1'){b.classList.add('ok');win(q)}else{tries++;b.classList.add('bad');b.disabled=true;fb('Belum tepat. Coba lagi atau buka petunjuk.','bad')}})}
+function order(q){const p=$('#play'),sh=shuf(q.steps.map((s,k)=>[s,k]));state.pick=[];
+ const draw=()=>{p.innerHTML=`<p>Jawabanmu:</p>`+q.steps.map((_,k)=>{const v=state.pick[k];return `<div class="slot ${v?'f':''}">${k+1}. ${v?v[0]:'...'}</div>`}).join('')+`<p>Pilih langkah:</p>`+sh.map((s,k)=>`<button class="opt ${state.pick.includes(s)?'used':''}" data-k="${k}" ${state.pick.includes(s)?'disabled':''}>${s[0]}</button>`).join('')+`<button class="btn ghost" id="rs">Ulangi susunan</button>`;
+  p.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{state.pick.push(sh[b.dataset.k]);
+   const n=state.pick.length-1;
+   if(state.pick[n][1]!==n){tries++;state.pick=[];fb('Urutan salah, susun ulang dari awal.','bad');draw();return}
+   draw();if(state.pick.length==q.steps.length){win(q);p.querySelectorAll('.opt').forEach(x=>x.disabled=true)}});
+  $('#rs').onclick=()=>{state.pick=[];draw()}};draw()}
+function gridLvl(q){const p=$('#play');
+ const cells=Array.from({length:q.n+1},(_,k)=>`<div class="c" id="c${k}">${k==0?'🤖':k==q.n?'🏁':''}</div>`).join('');
+ p.innerHTML=`<div class="grid" style="grid-template-columns:repeat(${q.n+1},44px)">${cells}</div><div id="opts"></div>`;
+ const o=$('#opts');o.innerHTML=shuf(q.opts).map(x=>`<button class="opt" data-c="${x[1]}"><code>${x[0]}</code></button>`).join('');
+ o.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+  if(b.dataset.c=='1'){b.classList.add('ok');let k=0;const t=setInterval(()=>{if(k>0)$('#c'+(k-1)).textContent='';if(k<q.n)$('#c'+k).textContent='';k++;$('#c'+k).textContent='🤖';if(k==q.n){clearInterval(t);$('#c'+k).textContent='🎉'}},350);win(q)}
+  else{tries++;b.classList.add('bad');b.disabled=true;fb('Belum tepat. Robo tidak sampai ke bendera dengan cara ini.','bad')}})}
+function end(){const max=L.length*3,st=Math.round(score/max*3);
+ app.innerHTML=`<div class="big">${st>=3?'🏆':st==2?'🥈':'🥉'}</div><h1>Misi selesai!</h1>
+ <div class="card"><p>Skor: <b>${score}/${max}</b> bintang.</p><p>Kamu sudah mencoba algoritma, perulangan, kondisi, data pelatihan AI, dan etika AI.</p><button class="btn" id="re">Main lagi</button></div>
+ <div class="card"><h2>Informasi Kreator</h2><p>Kreator: [Nama Kreator, gelar]<br>Organisasi: [Nama Sekolah/Institusi]</p>
+ <h2>Keterangan dan Sumber</h2><p>Materi dan kode game ini dibuat dengan bantuan AI (Claude, Anthropic) dan disunting oleh kreator.</p>
+ <p>Tidak ada gambar dari luar. Ikon berupa emoji Unicode yang tampil dari font bawaan perangkat. Font: Baloo 2 oleh Ek Type, lisensi SIL Open Font License 1.1, melalui Google Fonts.</p>
+ <p>Materi ini berlisensi CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/).</p></div>`;$('#re').onclick=start}
+start();
+</script></body></html>
